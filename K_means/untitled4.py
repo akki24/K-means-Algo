@@ -1,0 +1,37 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jun  1 15:24:37 2017
+
+@author: Akshaykumar.Kore
+"""
+
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+lb=LabelEncoder()
+
+datsetTrans=pd.read_csv("C:/Users/akshaykumar.kore/Downloads/machine learning/Code Gladiators-Invesco-DataSet/Code-Gladiators-Transaction.csv")
+
+
+
+datsetAum=pd.read_csv("C:/Users/akshaykumar.kore/Downloads/machine learning/Code Gladiators-Invesco-DataSet/Code-Gladiators-AUM.csv")
+datsetInesExp=pd.read_csv("C:/Users/akshaykumar.kore/Downloads/machine learning/Code Gladiators-Invesco-DataSet/Code-Gladiators-InvestmentExperience.csv")
+datsetActivity=pd.read_csv("C:/Users/akshaykumar.kore/Downloads/machine learning/Code Gladiators-Invesco-DataSet/Code-Gladiators-Activity.csv")
+
+transAum_dataset=pd.merge(datsetTrans,datsetAum,how='inner',left_on=['Unique_Advisor_Id','Unique_Investment_Id','Month'], right_on=['Unique_Advisor_Id','Unique_Investment_Id','Month'])
+transauminverexp_datset=pd.merge(transAum_dataset,datsetInesExp,how="inner",left_on=['Unique_Investment_Id','Month'],right_on=['Unique_Investment_Id','Month'])
+transauminesexpactivity_dataset=pd.merge(transauminverexp_datset,datsetActivity,how="inner",left_on=['Unique_Advisor_Id','Month'],right_on=['Unique_Advisor_Id','Month'])
+
+lb.fit(transauminesexpactivity_dataset['Month'])
+transauminesexpactivity_dataset['Month']=lb.transform(transauminesexpactivity_dataset['Month'])
+
+
+dumpdata=transauminesexpactivity_dataset[(transauminesexpactivity_dataset['Month']!=11)]
+
+testingdata=dumpdata[(dumpdata['Month']==10)]
+
+trainingdata=dumpdata[(dumpdata['Month']!=10)]
+
+trainingdata.to_csv('trainingdata.csv')
+
+testingdata.to_csv('testingdata.csv')
