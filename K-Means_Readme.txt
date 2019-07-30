@@ -1,5 +1,5 @@
 						
-								K-Means Algorithm
+											K-Means Algorithm
 
 Clustering:
 	  It is the assignment of a set of observations into subsets (called clusters) so that observations in the same cluster are similar in some sense. 
